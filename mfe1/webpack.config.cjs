@@ -6,6 +6,9 @@ module.exports = (
     {
         entry: './main.jsx',
         mode: 'production',
+        output: {
+            publicPath: 'auto'
+        },
         module: {
             rules: [
                 {
