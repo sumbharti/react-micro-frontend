@@ -9,5 +9,16 @@
   "localAppUrl": "http://localhost:3001/",
   "region": "prod",
   "connectionReferences": {},
-  "databaseReferences": {}
+  "databaseReferences": {
+    "default.cds": {
+      "dataSources": {
+        "contacts": {
+          "entitySetName": "contacts",
+          "logicalName": "contact"
+        }
+      },
+      "environmentVariableName": ""
+    }
+  },
+  "version": "1.0"
 }

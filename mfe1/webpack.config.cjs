@@ -1,13 +1,25 @@
 const {ModuleFederationPlugin} = require('webpack').container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { devServer } = require('../host/webpack.config.cjs');
+const path = require("path");
+const deps = require("./package.json").dependencies;
 
 module.exports = (
     {
         entry: './src/main.tsx',
         mode: 'production',
+        performance: {
+            hints: false,
+            maxEntrypointSize: 2000,
+            maxAssetSize: 2000
+        },
         output: {
             publicPath: 'auto'
+        },
+        resolve: {
+            alias: {
+            "../../../.power/schemas/appschemas": path.resolve(__dirname, ".power/schemas/appschemas")
+            },
+            extensions: [".tsx", ".ts", ".jsx", ".js"]
         },
         module: {
             rules: [
@@ -32,6 +44,20 @@ module.exports = (
             }
         },
         plugins: [
+            new ModuleFederationPlugin({
+                shared: {
+                    react: {
+                    singleton: true,        // ← only one instance allowed
+                    requiredVersion: deps["react"],
+                    eager: true,            // ← host should set eager: true
+                    },
+                    "react-dom": {
+                    singleton: true,
+                    requiredVersion: deps["react-dom"],
+                    eager: true,
+                    },
+                },
+            }),
             new ModuleFederationPlugin({
                 name: "mfe1",
                 filename: "remoteEntry.js",

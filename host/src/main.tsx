@@ -1,12 +1,12 @@
 import {createRoot} from 'react-dom/client'
 import React from 'react'
-const Remote = React.lazy(() => import("mfe1/Remote"!));
+import App from './app.tsx'
 
 createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
     <div>
         Hello host app
-        <Remote></Remote>
+        <App></App>
     </div>
     </React.StrictMode>
     
