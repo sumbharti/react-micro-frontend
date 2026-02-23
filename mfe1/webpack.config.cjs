@@ -4,7 +4,7 @@ const { devServer } = require('../host/webpack.config.cjs');
 
 module.exports = (
     {
-        entry: './main.jsx',
+        entry: './src/main.tsx',
         mode: 'production',
         output: {
             publicPath: 'auto'
@@ -12,13 +12,13 @@ module.exports = (
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(ts|tsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
                             presets:[
-                            '@babel/preset-env', '@babel/preset-react'
+                            '@babel/preset-env', ["@babel/preset-react", { "runtime": "automatic" }], "@babel/preset-typescript"
                         ]
                         }
                     }
@@ -36,7 +36,7 @@ module.exports = (
                 name: "mfe1",
                 filename: "remoteEntry.js",
                 exposes: {
-                    "./Remote": "./remote.jsx"
+                    "./Remote": "./src/remote.tsx"
                 }
             }),
             new HtmlWebpackPlugin({

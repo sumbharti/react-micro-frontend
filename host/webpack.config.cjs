@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (
     {
-        entry: './main.jsx',
+        entry: './src/main.tsx',
         mode: 'production',
         performance: {
             hints: false,
@@ -13,13 +13,13 @@ module.exports = (
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(ts|tsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
                             presets:[
-                            '@babel/preset-env', '@babel/preset-react'
+                            '@babel/preset-env', ["@babel/preset-react", { "runtime": "automatic" }], "@babel/preset-typescript"
                         ]
                         }
                     }
