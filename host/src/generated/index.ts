@@ -6,8 +6,10 @@
 // Models
 export * as AccountsModel from './models/AccountsModel';
 export * as CommonModels from './models/CommonModels';
+export * as ContactsModel from './models/ContactsModel';
 export * as SystemusersModel from './models/SystemusersModel';
 
 // Services
 export * from './services/AccountsService';
+export * from './services/ContactsService';
 export * from './services/SystemusersService';

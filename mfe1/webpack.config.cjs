@@ -56,6 +56,10 @@ module.exports = (
                     requiredVersion: deps["react-dom"],
                     eager: true,
                     },
+                    "@microsoft/power-apps": {
+                        singleton: true,
+                        eager: true
+                    }
                 },
             }),
             new ModuleFederationPlugin({

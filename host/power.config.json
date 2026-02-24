@@ -19,6 +19,10 @@
         "users": {
           "entitySetName": "systemusers",
           "logicalName": "systemuser"
+        },
+        "contacts": {
+          "entitySetName": "contacts",
+          "logicalName": "contact"
         }
       },
       "environmentVariableName": ""

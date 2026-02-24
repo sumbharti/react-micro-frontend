@@ -20,7 +20,8 @@ const Remote = () => {
 
             try {
                 const resultCollection = await ContactsService.getAll();
-                if(resultCollection != null && resultCollection.data.length > 0) {
+                console.log(resultCollection, 'resultCollection');
+                if(resultCollection.data) {
                     const resultDataCollection = resultCollection.data;
                     console.log(`Retrieved ${resultDataCollection.length} contacts`);
                     setCount(resultDataCollection.length);

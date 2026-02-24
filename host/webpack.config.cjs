@@ -50,12 +50,16 @@ module.exports = (
                     requiredVersion: deps["react-dom"],
                     eager: true,
                     },
+                    "@microsoft/power-apps": {
+                        singleton: true,
+                        eager: true
+                    }
                 },
             }),
             new ModuleFederationPlugin({
                 name: "mfe1",
                 remotes: {
-                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260223t161351z6642d85b74/remoteEntry.js'
+                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260223t171341z7fbc052f9e/remoteEntry.js'
                 }
             }),
             new HtmlWebpackPlugin({
