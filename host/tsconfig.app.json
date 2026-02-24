@@ -17,12 +17,15 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
+  "paths": {
+      "../../../.power/schemas/appschemas/*": [".power/schemas/appschemas/*"]
+    },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
