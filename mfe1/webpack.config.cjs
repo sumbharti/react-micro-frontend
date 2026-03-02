@@ -5,8 +5,8 @@ const deps = require("./package.json").dependencies;
 
 module.exports = (
     {
-        entry: './src/main.tsx',
-        mode: 'production',
+        entry: './src/bootstrap.tsx',
+        mode: process.env.NODE_ENV === 'production' || process.env.npm_lifecycle_event === 'build' ? 'production' : 'development',
         performance: {
             hints: false,
             maxEntrypointSize: 2000,
@@ -45,29 +45,26 @@ module.exports = (
         },
         plugins: [
             new ModuleFederationPlugin({
-                shared: {
-                    react: {
-                    singleton: true,        // ← only one instance allowed
-                    requiredVersion: deps["react"],
-                    eager: true,            // ← host should set eager: true
-                    },
-                    "react-dom": {
-                    singleton: true,
-                    requiredVersion: deps["react-dom"],
-                    eager: true,
-                    },
-                    "@microsoft/power-apps": {
-                        singleton: true,
-                        eager: true
-                    }
-                },
-            }),
-            new ModuleFederationPlugin({
                 name: "mfe1",
                 filename: "remoteEntry.js",
                 exposes: {
-                    "./Remote": "./src/remote.tsx"
-                }
+                    "./Remote": "./src/remote.tsx",
+                },
+                shared: {
+                    react: {
+                        singleton: true,
+                        requiredVersion: deps["react"],
+                        eager: true,
+                    },
+                    "react-dom": {
+                        singleton: true,
+                        requiredVersion: deps["react-dom"],
+                        eager: true,
+                    },
+                    // Do not share Power-Apps mfe1 bundles its own so standalone app loads
+                    // Do not share Fluent UI: mfe1 bundles its own so standalone app loads
+                    // and build finishes. Host still wraps with FluentProvider for when remote is used there.
+                },
             }),
             new HtmlWebpackPlugin({
                 template: './index.html',

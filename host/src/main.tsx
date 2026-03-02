@@ -1,13 +1,16 @@
-import {createRoot} from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import React from 'react'
+import { FluentProvider, webLightTheme } from '@fluentui/react-components'
 import App from './app.tsx'
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-    <div>
-        Hello host app
-        <App></App>
-    </div>
+        <FluentProvider theme={webLightTheme}>
+            <div>
+                Hello host app
+                <hr/>
+                <App />
+            </div>
+        </FluentProvider>
     </React.StrictMode>
-    
 )

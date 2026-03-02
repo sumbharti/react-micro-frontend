@@ -5,8 +5,8 @@ const deps = require("./package.json").dependencies;
 
 module.exports = (
     {
-        entry: './src/main.tsx',
-        mode: 'production',
+        entry: './src/bootstrap.tsx',
+        mode: process.env.NODE_ENV === 'production' || process.env.npm_lifecycle_event === 'build' ? 'production' : 'development',
         performance: {
             hints: false,
             maxEntrypointSize: 2000,
@@ -50,16 +50,15 @@ module.exports = (
                     requiredVersion: deps["react-dom"],
                     eager: true,
                     },
-                    "@microsoft/power-apps": {
-                        singleton: true,
-                        eager: true
-                    }
+                    // Do not share Power-Apps mfe1 bundles its own so standalone app loads
+                    // Do not share Fluent UI: mfe1 bundles its own so standalone app loads
+                    // and build finishes. Host still wraps with FluentProvider for when remote is used there.
                 },
             }),
             new ModuleFederationPlugin({
                 name: "mfe1",
                 remotes: {
-                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260223t171341z7fbc052f9e/remoteEntry.js'
+                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260301t072840z4b66ac1208/remoteEntry.js'
                 }
             }),
             new HtmlWebpackPlugin({

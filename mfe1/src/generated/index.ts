@@ -6,6 +6,8 @@
 // Models
 export * as CommonModels from './models/CommonModels';
 export * as ContactsModel from './models/ContactsModel';
+export * as Office365UsersModel from './models/Office365UsersModel';
 
 // Services
 export * from './services/ContactsService';
+export * from './services/Office365UsersService';
