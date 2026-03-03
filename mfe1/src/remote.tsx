@@ -108,7 +108,7 @@ const Remote = () => {
 
     return (
         <div>
-            <h2>Contacts</h2>
+            <h2>Active Contacts</h2>
             {loading && <p>Loading contacts ..</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
             {!loading && !error && (
