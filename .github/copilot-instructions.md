@@ -1,0 +1,241 @@
+# React Micro-Frontend Architecture Guide
+
+## Project Overview
+
+React-based micro-frontend (MFE) application using **Module Federation** with **Power Apps/Dataverse integration**.
+
+**Structure:**
+- `host/` - Shell application that orchestrates MFEs
+- `mfe1/` - Remote module exposing a contacts interface (lazy-loaded into host)
+- Both built with React 19, TypeScript, Webpack 5, and Fluent UI components
+
+---
+
+## Critical Architecture Patterns
+
+### 1. Module Federation & Shared Dependencies
+
+**Key principle:** Minimize shared modules to avoid conflicts.
+
+**Host webpack config** (mfe1/webpack.config.cjs):
+- Exposes `./Remote` via `remoteEntry.js` (publicPath: 'auto' for Power Apps URLs)
+- Shares React & React-DOM as **singletons with eager: true**
+- **Does NOT share:** Power Apps, Fluent UI (each MFE bundles its own)
+
+**Consumer webpack config** (host/webpack.config.cjs):
+- Remotes from external URL (Power Apps-hosted remoteEntry.js)
+- Shares React & React-DOM with eager: true (host loads first)
+- Lazy-loads remote via `React.lazy(() => import("mfe1/Remote"))`
+
+**Why this design?** Power Apps & Fluent UI have build/version conflicts when shared. Each MFE is self-contained, preventing deployment failures.
+
+### 2. Power Apps Data Integration
+
+**Data flow:** Auto-generated services (via `pac code` CLI) → React components
+
+**Generated artifacts:**
+- `src/generated/services/*Service.ts` - CRUD operations (DO NOT EDIT - auto-generated)
+- `src/generated/models/*Model.ts` - TypeScript interfaces
+- `.power/schemas/appschemas/dataSourcesInfo` - runtime configuration
+
+**Pattern example** ([remote.tsx](mfe1/src/remote.tsx)):
+```typescript
+// Service call returns IOperationResult<T>
+const result = await ContactsService.getAll();
+if (result.data) {
+  setContactEntityCollection(result.data);
+}
+```
+
+### 3. Component & State Management
+
+**Patterns observed:**
+- **Context + Hooks** for shared state ([ThemeProvider.tsx](mfe1/src/contexts/ThemeProvider.tsx))
+- **React hooks** for component-level state (useState, useEffect, useMemo, useCallback)
+- **Suspense + React.lazy** for async module loading
+- **Fluent UI makeStyles** for styled components (not CSS files)
+
+**Example** ([Layout.tsx](mfe1/src/components/Layout.tsx)):
+```typescript
+const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error('useTheme must be used within ThemeProvider');
+  return context;
+};
+```
+
+### 4. Styling & UI Library
+
+- **Fluent UI v9** (@fluentui/react-components) for all components
+- **Design tokens** via `tokens` object (e.g., `tokens.colorNeutralBackground1`)
+- **Responsive design** via `@media` queries in makeStyles
+- No external CSS files—use makeStyles exclusively
+
+---
+
+## Development & Build Workflows
+
+### Build Commands
+
+Both `host/` and `mfe1/` follow the same pattern:
+
+```bash
+npm run dev     # Starts: pac code run + webpack serve (dev server on :3000 or :3001)
+npm run build   # Compiles TypeScript + bundles with webpack
+```
+
+**Important:** `npm run dev` requires Power Apps CLI (`pac`) already initialized and authenticated.
+
+### Publishing to Power Apps
+
+After making changes:
+
+```bash
+cd host  # or mfe1
+npm run build              # Local compile + bundle
+pac code push              # Upload to Power Apps environment
+```
+
+**For MFE1 (remote):**
+After push, inspect the deployed `remoteEntry.js` URL and update host's webpack.config.cjs remotes configuration.
+
+---
+
+## Power SDK CLI Workflow
+
+### Initialize App (One-time)
+
+```bash
+pac code init -n "<AppName>" -env "<EnvironmentId>"
+```
+
+### Add Data Source (Generates Services/Models)
+
+```bash
+pac code add-data-source -a <apiId> -c <connectionId>
+```
+
+**Examples:**
+```bash
+pac code add-data-source -a "shared_office365users" -c "aa35d97110f747a49205461cbfcf8558"
+pac code add-data-source -a "shared_sql" -c "connId" -t "[dbo].[TableName]" -d "database.windows.net,db"
+```
+
+**Connection ID lookup:**
+```bash
+pac connection list
+```
+
+**After execution:**
+- New service files in `src/generated/services/`
+- New model files in `src/generated/models/`
+- TypeScript types auto-generated for type safety
+
+### Important: Do NOT manually edit generated files
+Re-running `pac code add-data-source` overwrites them.
+
+---
+
+## Data Service Patterns
+
+All auto-generated services follow the **IOperationResult** pattern:
+
+```typescript
+interface IOperationResult<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+// Always check result.data before using
+const result = await AccountsService.getAll();
+if (result.data) {
+  // result.data is Accounts[]
+}
+```
+
+**Available methods per service:**
+- `create(record)` - Create new record
+- `update(id, changedFields)` - Partial update
+- `delete(id)` - Delete by ID
+- `get(id, options?)` - Fetch single record
+- `getAll(options?)` - Fetch all records (paginated)
+- `getMetadata(options?)` - Get table metadata
+
+---
+
+## File Organization
+
+```
+host/
+  src/
+    generated/          ← DO NOT EDIT (auto-generated by pac code)
+      models/           ← TypeScript interfaces
+      services/         ← CRUD service classes
+    app.tsx             ← Host orchestrator (loads mfe1 remote)
+    bootstrap.tsx       ← Async entry point (shared modules ready)
+
+mfe1/
+  src/
+    generated/          ← DO NOT EDIT 
+    components/         ← Layout, PageHeader, etc.
+    contexts/           ← React Context (Theme)
+    hooks/              ← useTheme and custom hooks
+    remote.tsx          ← Exposed via Module Federation
+    HomePage.tsx        ← Main component
+```
+
+---
+
+## Common Tasks
+
+### Adding a new data-bound component
+
+1. Ensure data source exists: `pac connection list` (get connection ID)
+2. Add data source: `pac code add-data-source -a <apiId> -c <connId>`
+3. Import generated service: `import { XxxService } from './generated/services/XxxService'`
+4. Use in component with typical React patterns (useState, useEffect, try/catch error handling)
+5. Bind to Fluent UI components
+
+### Testing Module Federation locally
+
+- Start mfe1: `cd mfe1 && npm run dev` (runs on :3001)
+- In mfe1 webpack config, remotes URL defaults to dev server
+- Start host: `cd host && npm run dev` (runs on :3000)
+- Navigation to host loads mfe1 remote lazily
+
+### Debugging Power Apps integration
+
+1. Open dev tools (F12) in Power Apps running app
+2. Network tab → search `remoteEntry.js` or service calls
+3. Console logs from services are visible
+4. Check `.power/schemas/appschemas/dataSourcesInfo` for connection validation
+
+---
+
+## TypeScript & Tooling
+
+- **paths**: `power/schemas/appschemas` aliased in webpack resolve
+- **Strict mode enabled** (tsconfig.json)
+- **No source maps in production** (Webpack production mode)
+- **Babel preset-react** with automatic JSX runtime (no React import needed at top of files)
+
+---
+
+## Gotchas & Best Practices
+
+1. **Power Apps & Fluent UI NOT shared**: New installations in each MFE to prevent conflicts
+2. **Generated code is read-only**: Always regenerate via `pac code` commands, never hand-edit services/models
+3. **publicPath: 'auto'** in mfe1 webpack: Critical for Power Apps hosted URLs
+4. **Async bootstrap**: Both apps use async `bootstrap.tsx` → `main.tsx` to ensure Module Federation container ready
+5. **Singleton modules**: React/React-DOM misconfiguration = runtime duplication errors
+6. **ThemeProvider required**: Any component using `useTheme()` hook must be wrapped in `<ThemeProvider>`
+
+---
+
+## Key Files to Reference
+
+- Architecture: [host webpack](host/webpack.config.cjs), [mfe1 webpack](mfe1/webpack.config.cjs)
+- Data binding: [App.tsx](host/src/app.tsx), [remote.tsx](mfe1/src/remote.tsx)
+- Theme pattern: [ThemeProvider.tsx](mfe1/src/contexts/ThemeProvider.tsx), [useTheme.ts](mfe1/src/hooks/useTheme.ts)
+- UI layout: [Layout.tsx](mfe1/src/components/Layout.tsx)
