@@ -61,6 +61,11 @@ module.exports = (
                         requiredVersion: deps["react-dom"],
                         eager: true,
                     },
+                    "react-router-dom": {
+                    singleton: true,
+                    requiredVersion: deps["react-router-dom"],
+                    eager: true,
+                    },
                     // Do not share Power-Apps mfe1 bundles its own so standalone app loads
                     // Do not share Fluent UI: mfe1 bundles its own so standalone app loads
                     // and build finishes. Host still wraps with FluentProvider for when remote is used there.

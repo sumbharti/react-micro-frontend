@@ -50,6 +50,11 @@ module.exports = (
                     requiredVersion: deps["react-dom"],
                     eager: true,
                     },
+                    "react-router-dom": {
+                    singleton: true,
+                    requiredVersion: deps["react-router-dom"],
+                    eager: true,
+                    },
                     // Do not share Power-Apps mfe1 bundles its own so standalone app loads
                     // Do not share Fluent UI: mfe1 bundles its own so standalone app loads
                     // and build finishes. Host still wraps with FluentProvider for when remote is used there.
@@ -58,7 +63,7 @@ module.exports = (
             new ModuleFederationPlugin({
                 name: "mfe1",
                 remotes: {
-                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260303t054856z133cb30f13/remoteEntry.js'
+                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260303t114808z14376fff68/remoteEntry.js'
                 }
             }),
             new HtmlWebpackPlugin({

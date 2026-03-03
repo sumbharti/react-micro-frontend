@@ -11,7 +11,9 @@ import {
     Button,
     Input,
 } from "@fluentui/react-components";
-import { ArrowDownRegular, ArrowUpRegular, DismissRegular } from "@fluentui/react-icons";
+import { ArrowDownRegular, ArrowUpRegular, DismissRegular, EditRegular } from "@fluentui/react-icons";
+
+import ContactDetailForm from "./ContactDetailForm";
 
 const PAGE_SIZE = 10;
 
@@ -40,6 +42,8 @@ const Remote = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortKey, setSortKey] = useState<SortKey>("fullname");
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+    const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
+    const [displayDetailForm, setDisplayDetailForm] = useState(false);
 
     useEffect(() => {
         loadContacts();
@@ -106,6 +110,21 @@ const Remote = () => {
         fetchContacts();
     };
 
+    const handleCloseDetailForm = () => {
+        setDisplayDetailForm(false);
+        setSelectedContactId(null);
+    };
+
+    // Show detail form if displayDetailForm is true
+    if (displayDetailForm && selectedContactId) {
+        return (
+            <ContactDetailForm
+                contactId={selectedContactId}
+                onCancel={handleCloseDetailForm}
+            />
+        );
+    }
+
     return (
         <div>
             <h2>Active Contacts</h2>
@@ -153,6 +172,7 @@ const Remote = () => {
                                         </span>
                                     </TableHeaderCell>
                                 ))}
+                                <TableHeaderCell style={{ fontWeight: 700 }}>Actions</TableHeaderCell>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -166,6 +186,19 @@ const Remote = () => {
                                     <TableCell>{cont.address1_stateorprovince ?? "—"}</TableCell>
                                     <TableCell>{cont.address1_country ?? "—"}</TableCell>
                                     <TableCell>{cont.address1_postalcode ?? "—"}</TableCell>
+                                    <TableCell>
+                                        <Button
+                                            appearance="subtle"
+                                            icon={<EditRegular />}
+                                            onClick={() => {
+                                                setSelectedContactId(cont.contactid);
+                                                setDisplayDetailForm(true);
+                                            }}
+                                            title="View/Edit contact details"
+                                        >
+                                            View
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
