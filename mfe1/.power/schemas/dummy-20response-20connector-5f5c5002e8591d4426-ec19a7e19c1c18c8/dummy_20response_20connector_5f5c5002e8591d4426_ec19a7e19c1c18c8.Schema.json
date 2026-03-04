@@ -1,0 +1,118 @@
+{
+  "name": "shared_dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+  "id": "/providers/Microsoft.PowerApps/apis/shared_dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+  "type": "Microsoft.PowerApps/apis",
+  "properties": {
+    "displayName": "Dummy Response Connector",
+    "iconUri": "https://defaulticons.powerapps.com/defaulticons/api-dedicated.png",
+    "iconBrandColor": "#007ee5",
+    "contact": {},
+    "license": {},
+    "apiEnvironment": "Shared",
+    "isCustomApi": true,
+    "blobUrisAreProxied": false,
+    "connectionParameters": {},
+    "swagger": {
+      "swagger": "2.0",
+      "info": {
+        "title": "Dummy Response Connector",
+        "description": "",
+        "version": "1.0"
+      },
+      "host": "india-001.azure-apim.net",
+      "basePath": "/apim/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+      "schemes": [
+        "https"
+      ],
+      "consumes": [],
+      "produces": [],
+      "paths": {
+        "/{connectionId}/products": {
+          "get": {
+            "responses": {
+              "default": {
+                "description": "default",
+                "schema": {}
+              }
+            },
+            "summary": "Products",
+            "description": "Get Products",
+            "operationId": "Products",
+            "parameters": [
+              {
+                "name": "connectionId",
+                "in": "path",
+                "required": true,
+                "x-ms-visibility": "internal",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "definitions": {},
+      "parameters": {},
+      "responses": {},
+      "security": [],
+      "tags": [],
+      "securityDefinitions": {}
+    },
+    "runtimeUrls": [
+      "https://india-001.azure-apim.net/apim/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8"
+    ],
+    "primaryRuntimeUrl": "https://india-001.azure-apim.net/apim/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+    "doNotUseApiHubNetRuntimeUrl": "https://aab8eb13-4fa9-e071-9c20-fe969e5bc9d5.13.custom.india.azure-apihub.net/apim/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+    "metadata": {
+      "source": "powerapps-user-defined",
+      "brandColor": "#007ee5",
+      "contact": {},
+      "license": {},
+      "publisherUrl": null,
+      "serviceUrl": null,
+      "documentationUrl": null,
+      "environmentName": "aab8eb13-4fa9-e071-9c20-fe969e5bc9d5",
+      "xrmConnectorId": null,
+      "almMode": "Environment",
+      "parameters": {},
+      "useNewApimVersion": "True",
+      "createdBy": "{\"id\":\"64d09668-1a83-4c72-9221-19c773345081\",\"displayName\":\"Sumit Bharti\",\"type\":\"User\",\"tenantId\":\"0ea672eb-3c32-4002-bd03-fec2acb1fea8\",\"userPrincipalName\":\"admin@sumbcorp.onmicrosoft.com\"}",
+      "modifiedBy": "{\"id\":\"64d09668-1a83-4c72-9221-19c773345081\",\"displayName\":\"Sumit Bharti\",\"type\":\"User\",\"tenantId\":\"0ea672eb-3c32-4002-bd03-fec2acb1fea8\",\"userPrincipalName\":\"admin@sumbcorp.onmicrosoft.com\"}",
+      "allowSharing": false
+    },
+    "capabilities": [],
+    "description": "",
+    "apiDefinitions": {
+      "originalSwaggerUrl": "https://indl001sinext.blob.core.windows.net/api-swagger-files/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8.json_original?skoid=ca341296-c41c-4be1-816b-9b41bcbf6ffb&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skt=2026-03-04T15%3A05%3A32Z&ske=2026-03-05T15%3A05%3A32Z&sks=b&skv=2025-01-05&sv=2025-01-05&spr=https&se=2026-03-04T18%3A00%3A47Z&sr=b&sp=r&sig=gps0pGinviaURkoghG%2FPKm9krqIE%2BLbO54gAQFHUal8%3D",
+      "modifiedSwaggerUrl": "https://indl001sinext.blob.core.windows.net/api-swagger-files/dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8.json?skoid=ca341296-c41c-4be1-816b-9b41bcbf6ffb&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skt=2026-03-04T15%3A05%3A32Z&ske=2026-03-05T15%3A05%3A32Z&sks=b&skv=2025-01-05&sv=2025-01-05&spr=https&se=2026-03-04T18%3A00%3A47Z&sr=b&sp=r&sig=0fcdWF%2FGZjMG%2BUTuCyppPvxWeXHxsFYztFDMpduCk74%3D"
+    },
+    "backendService": {
+      "serviceUrl": "https://dummyjson.com/"
+    },
+    "createdBy": {
+      "id": "64d09668-1a83-4c72-9221-19c773345081",
+      "displayName": "Sumit Bharti",
+      "type": "User",
+      "tenantId": "0ea672eb-3c32-4002-bd03-fec2acb1fea8",
+      "userPrincipalName": "admin@sumbcorp.onmicrosoft.com"
+    },
+    "modifiedBy": {
+      "id": "64d09668-1a83-4c72-9221-19c773345081",
+      "displayName": "Sumit Bharti",
+      "type": "User",
+      "tenantId": "0ea672eb-3c32-4002-bd03-fec2acb1fea8",
+      "userPrincipalName": "admin@sumbcorp.onmicrosoft.com"
+    },
+    "createdTime": "2026-03-04T16:59:56.5810035Z",
+    "changedTime": "2026-03-04T16:59:56.5810035Z",
+    "environment": {
+      "id": "/providers/Microsoft.PowerApps/environments/aab8eb13-4fa9-e071-9c20-fe969e5bc9d5",
+      "name": "aab8eb13-4fa9-e071-9c20-fe969e5bc9d5"
+    },
+    "tier": "Standard",
+    "publisher": "Sumit Bharti",
+    "almMode": "Environment",
+    "parameters": {},
+    "rateLimit": 0,
+    "apiVersion": "None"
+  }
+}

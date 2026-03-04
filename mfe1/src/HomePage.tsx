@@ -1,3 +1,4 @@
+import DummyResponseCustomConnector from "./CustomConnector";
 import Office365 from "./office365";
 import Remote from "./remote";
 import { makeStyles, shorthands, tokens } from "@fluentui/react-components";
@@ -20,10 +21,6 @@ const HomePage = () => {
 
     return(
         <div className={styles.root}>
-            {/* Hello mfe1
-            <hr />
-            <Office365 />
-            <hr /> */}
             <Remote />
         </div>
     )

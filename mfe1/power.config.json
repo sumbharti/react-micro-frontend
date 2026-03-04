@@ -16,6 +16,14 @@
         "office365users"
       ],
       "dataSets": {}
+    },
+    "c48d0d3b-7a36-47fd-98ff-236c4fcdb69c": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_dummy-20response-20connector-5f5c5002e8591d4426-ec19a7e19c1c18c8",
+      "displayName": "Dummy Response Connector",
+      "dataSources": [
+        "dummy_20response_20connector_5f5c5002e8591d4426_ec19a7e19c1c18c8"
+      ],
+      "dataSets": {}
     }
   },
   "databaseReferences": {
