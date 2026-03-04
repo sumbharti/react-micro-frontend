@@ -1,28 +1,14 @@
-import { Office365UsersService } from './generated/services/Office365UsersService';
-import type { User } from './generated/models/Office365UsersModel';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { getContext, type IContext } from '@microsoft/power-apps/app';
 
-const Office365 = () => {
+const AppContext = () => {
 
-    const [profileUser, setProfileUser] = useState<User | null>(null);
     const [context, setContext] = useState<IContext>();
 
     useEffect(() => {
-        loadProfile();
         loadContext();
+
     }, []);
-
-    const loadProfile = () => {
-        const loadOffice365Profile = async () => {
-            var result = await Office365UsersService.MyProfile();
-            if(result.success) {
-                setProfileUser(result.data);
-            }
-        }
-
-        loadOffice365Profile();
-    }
 
     const loadContext = () => {
 
@@ -36,12 +22,6 @@ const Office365 = () => {
     }
 
     return(<>
-        <h2>Office 365 Profile</h2>
-        <ul>
-            <li>Id: {profileUser?.Id}</li>
-            <li>Name: {profileUser?.DisplayName}</li>
-        </ul>
-        <hr/>
         <h2>Response from Context</h2>
         <ul>
             <li>App ID: {context?.app.appId}</li>
@@ -51,11 +31,10 @@ const Office365 = () => {
             <li>Object ID: {context?.user.objectId}</li>
             <li>Tenant ID: {context?.user.tenantId}</li>
             <li>User Principal Name: {context?.user.userPrincipalName}</li>
-            <li>Session ID: {context?.host.sessionId}</li>
+            <li><b>Session ID: {context?.host.sessionId}</b></li>
         </ul>
+        </>);
 
-
-    </>);
 }
 
-export default Office365;
+export default AppContext;
