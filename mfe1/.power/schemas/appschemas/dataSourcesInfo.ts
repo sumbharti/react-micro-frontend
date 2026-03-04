@@ -12,6 +12,31 @@ export const dataSourcesInfo = {
     "dataSourceType": "Dataverse",
     "apis": {}
   },
+  "dummy_20response_20connector_5f5c5002e8591d4426_ec19a7e19c1c18c8": {
+    "tableId": "",
+    "version": "",
+    "primaryKey": "",
+    "dataSourceType": "Connector",
+    "apis": {
+      "Products": {
+        "path": "/{connectionId}/products",
+        "method": "GET",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responseInfo": {
+          "default": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
   "office365users": {
     "tableId": "",
     "version": "",

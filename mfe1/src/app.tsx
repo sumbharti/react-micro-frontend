@@ -3,6 +3,8 @@ import Layout from "./components/Layout";
 import { Suspense } from "react";
 import { Routes, Route } from 'react-router-dom'
 import HomePage from "./HomePage";
+import DummyResponseCustomConnector from "./CustomConnector";
+import Office365 from "./office365";
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +37,8 @@ const App = () => {
             <Suspense fallback={<LoadingFallback />}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/office365" element={<Office365 />} />
+                    <Route path="/customconnector" element={<DummyResponseCustomConnector />} />
                 </Routes>
             </Suspense>
         </Layout>

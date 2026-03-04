@@ -22,7 +22,7 @@ const Office365 = () => {
     }
 
     return(<>
-        <p>Logged in user:</p>
+        <h2>Office 365 Profile</h2>
         <ul>
             <li>Id: {profileUser?.Id}</li>
             <li>Name: {profileUser?.DisplayName}</li>

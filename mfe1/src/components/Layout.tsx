@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react-components';
 import { useTheme } from '../hooks/useTheme';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeFilled, HomeRegular, NavigationRegular, WeatherMoonRegular, WeatherSunnyRegular } from '@fluentui/react-icons';
+import { ConnectorFilled, ConnectorRegular, HomeFilled, HomeRegular, NavigationRegular, PersonFilled, PersonRegular, WeatherMoonRegular, WeatherSunnyRegular } from '@fluentui/react-icons';
 
 const useStyles = makeStyles({
   root: {
@@ -281,7 +281,9 @@ const useStyles = makeStyles({
 });
 
 const routeNames: Record<string, string> = {
-  '/': 'Home'
+  '/': 'Home',
+  '/office365': 'Office 365 Profile',
+  '/customconnector': 'Custom Connector',
 };
 
 interface NavItem {
@@ -300,7 +302,20 @@ const navItems: NavItem[] = [
     icon: <HomeRegular />,
     iconFilled: <HomeFilled />,
   },
-
+  {
+    path: '/office365',
+    label: 'Office 365 Profile',
+    description: 'View your Office 365 profile',
+    icon: <PersonRegular />,
+    iconFilled: <PersonFilled />,
+  },
+  {
+    path: '/customconnector',
+    label: 'Custom Connector',
+    description: 'Use the custom connector',
+    icon: <ConnectorRegular />,
+    iconFilled: <ConnectorFilled />,
+  }
 ]
 
 
