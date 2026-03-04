@@ -1,74 +1,45 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
+import { makeStyles, shorthands, Spinner, tokens } from '@fluentui/react-components';
+import Layout from './components/Layout.tsx';
+import { Route, Routes } from 'react-router-dom';
+import Account from './Account.tsx';
 
-import type { Accounts } from './generated/models/AccountsModel.ts';
-import { AccountsService } from './generated/services/AccountsService.ts';
-import type { Systemusers } from './generated/models/SystemusersModel.ts';
-import { SystemusersService } from './generated/services/SystemusersService.ts';
+// import type { Systemusers } from './generated/models/SystemusersModel.ts';
+// import { SystemusersService } from './generated/services/SystemusersService.ts';
+
 
 const Remote = React.lazy(() => import("mfe1/Remote"!));
 
+const useStyles = makeStyles({
+  root: {
+    ...shorthands.margin(0),
+    ...shorthands.padding(0),
+    minHeight: '100vh',
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  loadingContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '200px',
+  },
+});
+
 const App = () => {
 
-    const [count, setCount] = useState(0);
-    const [accountsEntityCollection, setAccountsEntityCollection] = useState<Accounts[]>([]);
-    const [systemusersEntityCollection, setSystemUsersEntityCollection] = useState<Systemusers[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    // const [systemusersEntityCollection, setSystemUsersEntityCollection] = useState<Systemusers[]>([]);
 
-    useEffect(() => {
-      loadAccounts();
-    }, []);
+    const styles = useStyles();
+    
+    const LoadingFallback = () => (
+        <div className={styles.loadingContainer}>
+        <Spinner size="medium" label="Loading page..." />
+        </div>
+    );
 
-    const loadAccounts = () => {
-        const fetchAccounts = async () => {
-            setLoading(true)
-            setError(null)
-            
-            try {
-                const resultCollection = await AccountsService.getAll();
-                console.log(resultCollection.success);
-                if(resultCollection.data) {
-                    const resultDataCollection = resultCollection.data;
-                    console.log(`resultcollection: ${resultCollection} ${resultDataCollection}`)
-                    console.log(`Retrieved ${resultDataCollection.length} accounts`);
-                    setCount(resultDataCollection.length);
-                    setAccountsEntityCollection(resultDataCollection);
-                }
-            } 
-            catch (error) {
-                console.log(`Failed to fetch accounts: `, error);
-                setError(`Failed to fetch accounts`);
-            }
-            finally {
-                setLoading(false);
-            }
-        }
+    
 
-        fetchAccounts();
-    }
-
-    const returnAccount = () => {
-        return (<div>
-            <div>
-            <h2>Accounts</h2>
-            {loading && <p>Loading accounts</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {!loading && !error && (
-            <div>
-            <p>Total accounts: {count}</p>
-                <ul>
-                {accountsEntityCollection.map((acct) => (
-                    <li key={acct.accountid}>
-                        {acct.name || 'Unknown User'}
-                    </li>
-                ))}
-                </ul>
-            </div>
-            )}
-            </div>
-        </div>);
-    }
+    /******** System Users *********
 
     const loadSystemUser = () => {
         const fetchUsers = async () => {
@@ -119,10 +90,17 @@ const App = () => {
         );
     }
 
+    ******************************/
+
     return(<>
-        {returnAccount()}
-        <hr/>
-        <Remote></Remote>
+        <Layout>
+            <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+                <Route path="/" element={<Account />} />
+                <Route path="/contacts" element={<Remote />} />
+            </Routes>
+            </Suspense>
+        </Layout>
     </>)
 
 }
