@@ -281,8 +281,8 @@ const useStyles = makeStyles({
 });
 
 const routeNames: Record<string, string> = {
-  '/': 'Home',
-  '/office365': 'Office 365 Profile',
+  '/': 'Contacts',
+  '/office365': 'Profile',
   '/customconnector': 'Custom Connector',
 };
 
@@ -297,15 +297,15 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     path: '/',
-    label: 'Home',
-    description: 'Welcome and overview',
+    label: 'Contacts',
+    description: 'Manage your contacts',
     icon: <HomeRegular />,
     iconFilled: <HomeFilled />,
   },
   {
     path: '/office365',
-    label: 'Office 365 Profile',
-    description: 'View your Office 365 profile',
+    label: 'Profile',
+    description: 'View your profile',
     icon: <PersonRegular />,
     iconFilled: <PersonFilled />,
   },

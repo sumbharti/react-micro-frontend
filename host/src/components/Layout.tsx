@@ -304,7 +304,7 @@ const navItems: NavItem[] = [
   {
     path: '/contacts',
     label: 'Contacts',
-    description: 'Manage your contacts',
+    description: 'Remote component',
     icon: <PersonRegular />,
     iconFilled: <PersonFilled />,
   },

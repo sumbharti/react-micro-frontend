@@ -42,6 +42,60 @@ const Account = () => {
         fetchAccounts();
     }
 
+     /******** System Users *********
+    
+        const loadSystemUser = () => {
+            const fetchUsers = async () => {
+                setLoading(true)
+                setError(null)
+                try {
+                const result = await SystemusersService.getAll()
+                if (result.data) {
+                    const users = result.data
+                    console.log(`Retrieved ${users.length} accounts`)
+                    setCount(users.length);
+                    setSystemUsersEntityCollection(users);
+                }
+                } 
+                catch (err) {
+                console.error('Failed to retrieve users:', err)
+                setError('Failed to retrieve users')
+                } 
+                finally {
+                setLoading(false)
+                }
+            }
+    
+            fetchUsers();
+        }
+    
+        const returnSystemUser = () => {
+            return (
+                <div>
+                <div>
+                <h2>SystemUser</h2>
+                {loading && <p>Loading users</p>}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {!loading && !error && (
+                    <div>
+                    <p>Total users: {count}</p>
+                    <ul>
+                    {systemusersEntityCollection.map((user) => (
+                        <li key={user.systemuserid}>
+                        {user.fullname || 'Unknown User'}
+                        </li>
+                    ))}
+                    </ul>
+                    </div>
+                )}
+                </div>
+            </div>
+            );
+        }
+    
+        ******************************/
+    
+
     return (<div>
             <div>
             <h2>Accounts</h2>

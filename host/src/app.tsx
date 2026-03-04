@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { makeStyles, shorthands, Spinner, tokens } from '@fluentui/react-components';
 import Layout from './components/Layout.tsx';
 import { Route, Routes } from 'react-router-dom';
-import Account from './Account.tsx';
+import AppContext from './Context.tsx';
 
 // import type { Systemusers } from './generated/models/SystemusersModel.ts';
 // import { SystemusersService } from './generated/services/SystemusersService.ts';
@@ -37,66 +37,11 @@ const App = () => {
         </div>
     );
 
-    
-
-    /******** System Users *********
-
-    const loadSystemUser = () => {
-        const fetchUsers = async () => {
-            setLoading(true)
-            setError(null)
-            try {
-            const result = await SystemusersService.getAll()
-            if (result.data) {
-                const users = result.data
-                console.log(`Retrieved ${users.length} accounts`)
-                setCount(users.length);
-                setSystemUsersEntityCollection(users);
-            }
-            } 
-            catch (err) {
-            console.error('Failed to retrieve users:', err)
-            setError('Failed to retrieve users')
-            } 
-            finally {
-            setLoading(false)
-            }
-        }
-
-        fetchUsers();
-    }
-
-    const returnSystemUser = () => {
-        return (
-            <div>
-            <div>
-            <h2>SystemUser</h2>
-            {loading && <p>Loading users</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {!loading && !error && (
-                <div>
-                <p>Total users: {count}</p>
-                <ul>
-                {systemusersEntityCollection.map((user) => (
-                    <li key={user.systemuserid}>
-                    {user.fullname || 'Unknown User'}
-                    </li>
-                ))}
-                </ul>
-                </div>
-            )}
-            </div>
-        </div>
-        );
-    }
-
-    ******************************/
-
     return(<>
         <Layout>
             <Suspense fallback={<LoadingFallback />}>
             <Routes>
-                <Route path="/" element={<Account />} />
+                <Route path="/" element={<AppContext />} />
                 <Route path="/contacts" element={<Remote />} />
             </Routes>
             </Suspense>
