@@ -2,6 +2,7 @@ import DummyResponseCustomConnector from "./CustomConnector";
 import Office365 from "./office365";
 import Remote from "./remote";
 import { makeStyles, shorthands, tokens } from "@fluentui/react-components";
+import { appInsights } from './telemetry/appInsights';
 
 const useStyles = makeStyles({
     root: {
@@ -19,6 +20,10 @@ const useStyles = makeStyles({
 const HomePage = () => {
     const styles = useStyles();
 
+    appInsights.trackEvent({ name: "HomePage_Loaded", properties: { timestamp: new Date().toISOString() } });
+    appInsights.trackPageView({ name: "HomePage", uri: "/" });
+    appInsights.trackTrace({ message: "HomePage loaded", severityLevel: 1 });
+    
     return(
         <div className={styles.root}>
             <Remote />

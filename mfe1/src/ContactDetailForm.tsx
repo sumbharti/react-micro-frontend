@@ -13,6 +13,7 @@ import {
     tokens,
 } from "@fluentui/react-components";
 import { ArrowLeftRegular, ArrowRightRegular, SaveRegular, DismissRegular } from "@fluentui/react-icons";
+import { appInsights } from './telemetry/appInsights.ts';
 
 const useStyles = makeStyles({
     root: {
@@ -125,6 +126,11 @@ const useStyles = makeStyles({
 });
 
 const ContactDetailForm = (props: { contactId: string; onCancel: () => void }) => {
+
+    appInsights.trackEvent({ name: "ContactDetailForm_Opened", properties: { contactId: props.contactId } });
+    appInsights.trackPageView({ name: "ContactDetailForm", uri: "/contact-detail" });
+    appInsights.trackTrace({ message: `ContactDetailForm opened for contact ID: ${props.contactId}`, severityLevel: 1 });
+
     const { contactId, onCancel } = props;
     const styles = useStyles();
 

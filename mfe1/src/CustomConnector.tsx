@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { DummyResponseConnectorService } from "./generated";
+import { DummyResponseConnectorService } from "./generated/";
+import { appInsights } from './telemetry/appInsights';
 
 const DummyResponseCustomConnector = () => {
 
@@ -10,6 +11,10 @@ const DummyResponseCustomConnector = () => {
     }, [])
 
     const loadResponse = () => {
+        appInsights.trackEvent({ name: "CustomConnector_LoadResponse", properties: { timestamp: new Date().toISOString() } });
+        appInsights.trackPageView({ name: "CustomConnectorPage", uri: "/custom-connector" });
+        appInsights.trackTrace({ message: "Loading response from custom connector", severityLevel: 1 });
+
         const loadDummyResponseAsync = async() => {
             var response = await DummyResponseConnectorService.Products();
 
