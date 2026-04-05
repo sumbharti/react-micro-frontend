@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { Contacts } from "./generated/models/ContactsModel.ts";
 import { ContactsService } from "./generated/services/ContactsService.ts";
 import {
@@ -13,18 +13,17 @@ import {
     tokens,
 } from "@fluentui/react-components";
 import { ArrowLeftRegular, ArrowRightRegular, SaveRegular, DismissRegular } from "@fluentui/react-icons";
+import { appInsights } from './telemetry/appInsights.ts';
 
 const useStyles = makeStyles({
     root: {
-        ...shorthands.padding("24px"),
-        maxWidth: "1000px",
+        maxWidth: "auto",
         margin: "0 auto",
     },
     header: {
         display: "flex",
         alignItems: "center",
-        gap: "12px",
-        marginBottom: "24px",
+        marginBottom: "32px",
     },
     backButton: {
         marginRight: "12px",
@@ -35,13 +34,44 @@ const useStyles = makeStyles({
         margin: 0,
     },
     tabsContainer: {
-        marginBottom: "24px",
+        marginBottom: "32px",
     },
     processFlow: {
         display: "flex",
         alignItems: "center",
-        gap: "12px",
-        marginBottom: "16px",
+        width: "100%",
+        marginBottom: "32px",
+    },
+    stageContainer: {
+        display: "flex",
+        flex: 1,
+        alignItems: "center",
+        padding: "0 8px",
+    },
+    stageWrapper: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        flex: "0 0 auto",
+        minWidth: "72px",
+        position: "relative",
+        zIndex: 1,
+    },
+    stageConnectorLine: {
+        flex: 1,
+        height: "2px",
+        backgroundColor: tokens.colorNeutralStroke2,
+        margin: "0 -4px",
+        zIndex: 0,
+    },
+    stageLabel: {
+        marginTop: "6px",
+        fontSize: "12px",
+        color: tokens.colorNeutralForeground3,
+        textAlign: "center",
+        lineHeight: 1.2,
+        position: "relative",
+        zIndex: 1,
     },
     stageCircle: {
         width: "32px",
@@ -55,6 +85,8 @@ const useStyles = makeStyles({
         fontSize: "14px",
         cursor: "pointer",
         transition: "background-color 0.2s, color 0.2s",
+        position: "relative",
+        zIndex: 1,
     },
     stageCircleActive: {
         width: "32px",
@@ -63,12 +95,14 @@ const useStyles = makeStyles({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: tokens.colorBrandBackground2,
-        color: tokens.colorBrandForeground1,
+        backgroundColor: tokens.colorBrandBackgroundSelected,
+        color: tokens.colorNeutralForegroundOnBrand,
         fontSize: "14px",
         fontWeight: 600,
         cursor: "pointer",
         transition: "background-color 0.2s, color 0.2s",
+        position: "relative",
+        zIndex: 1,
     },
     stageArrow: {
         fontSize: "20px",
@@ -80,7 +114,6 @@ const useStyles = makeStyles({
         gap: "16px",
         padding: "20px",
         backgroundColor: tokens.colorNeutralBackground2,
-        ...shorthands.borderRadius(tokens.borderRadiusMedium),
     },
     tabContentFullForm: {
         display: "grid",
@@ -88,7 +121,6 @@ const useStyles = makeStyles({
         gap: "16px",
         padding: "20px",
         backgroundColor: tokens.colorNeutralBackground2,
-        ...shorthands.borderRadius(tokens.borderRadiusMedium),
     },
     fullWidth: {
         gridColumn: "1 / -1",
@@ -125,6 +157,11 @@ const useStyles = makeStyles({
 });
 
 const ContactDetailForm = (props: { contactId: string; onCancel: () => void }) => {
+
+    appInsights.trackEvent({ name: "ContactDetailForm_Opened", properties: { contactId: props.contactId } });
+    appInsights.trackPageView({ name: "ContactDetailForm", uri: "/contact-detail" });
+    appInsights.trackTrace({ message: `ContactDetailForm opened for contact ID: ${props.contactId}`, severityLevel: 1 });
+
     const { contactId, onCancel } = props;
     const styles = useStyles();
 
@@ -135,10 +172,10 @@ const ContactDetailForm = (props: { contactId: string; onCancel: () => void }) =
     const [formData, setFormData] = useState<Partial<Contacts>>({});
     const STAGE_ORDER = ["basic", "contact", "address", "personal"];
     const STAGE_LABELS: Record<string, string> = {
-        basic: "Basic",
-        contact: "Contact",
-        address: "Address",
-        personal: "Personal",
+        basic: "Basic Information",
+        contact: "Contact Information",
+        address: "Address Information",
+        personal: "Personal Information",
     };
     const [selectedTab, setSelectedTab] = useState<string>("basic");
 
@@ -256,36 +293,25 @@ const ContactDetailForm = (props: { contactId: string; onCancel: () => void }) =
 
             {/* process flow bar */}
             <div className={styles.processFlow}>
-                <Button
-                    appearance="subtle"
-                    icon={<ArrowLeftRegular />}
-                    onClick={prevStage}
-                    disabled={currentStageIndex <= 0}
-                    title="Previous stage"
-                />
-                {STAGE_ORDER.map((key, idx) => (
-                    <span key={key} style={{ display: 'flex', alignItems: 'center' }}>
-                        <span
-                            className={
-                                selectedTab === key ? styles.stageCircleActive : styles.stageCircle
-                            }
-                            onClick={() => goToStage(idx)}
-                            aria-label={STAGE_LABELS[key]}
-                        >
-                            {/* {idx + 1} */}
-                        </span>
-                        {idx < STAGE_ORDER.length - 1 && (
-                            <span className={styles.stageArrow}>&#x2192;</span>
-                        )}
-                    </span>
-                ))}
-                <Button
-                    appearance="subtle"
-                    icon={<ArrowRightRegular />}
-                    onClick={nextStage}
-                    disabled={currentStageIndex >= STAGE_ORDER.length - 1}
-                    title="Next stage"
-                />
+                <div className={styles.stageContainer}>
+                    {STAGE_ORDER.map((key, idx) => (
+                        <Fragment key={key}>
+                            <span className={styles.stageWrapper}>
+                                <span
+                                    className={
+                                        selectedTab === key ? styles.stageCircleActive : styles.stageCircle
+                                    }
+                                    onClick={() => goToStage(idx)}
+                                    aria-label={STAGE_LABELS[key]}
+                                />
+                                <span className={styles.stageLabel}>{STAGE_LABELS[key]}</span>
+                            </span>
+                            {idx < STAGE_ORDER.length - 1 && (
+                                <div className={styles.stageConnectorLine} />
+                            )}
+                        </Fragment>
+                    ))}
+                </div>                
             </div>
 
             <div className={styles.tabsContainer}>

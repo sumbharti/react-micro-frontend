@@ -1,5 +1,6 @@
 const {ModuleFederationPlugin} = require('webpack').container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 const path = require("path");
 const deps = require("./package.json").dependencies;
 
@@ -74,7 +75,8 @@ module.exports = (
             new HtmlWebpackPlugin({
                 template: './index.html',
                 scriptLoading: 'defer'
-            })
+            }),
+            new Dotenv()
         ]
     }
 )

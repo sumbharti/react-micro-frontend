@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { Contacts } from "./generated/models/ContactsModel.ts";
-import { ContactsService } from "./generated/services/ContactsService.ts";
+import type { Contacts } from "../generated/models/ContactsModel.ts";
+import { ContactsService } from "../generated/services/ContactsService.ts";
 import {
     Table,
     TableBody,
@@ -13,9 +13,9 @@ import {
 } from "@fluentui/react-components";
 import { ArrowDownRegular, ArrowUpRegular, DismissRegular, EditRegular } from "@fluentui/react-icons";
 
-import ContactDetailForm from "./ContactDetailForm";
+import ContactDetailForm from "../ContactDetailForm.tsx";
 
-import { appInsights } from './telemetry/appInsights';
+import { appInsights } from '../telemetry/appInsights.ts';
 
 const PAGE_SIZE = 10;
 
