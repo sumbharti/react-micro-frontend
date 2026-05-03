@@ -18,7 +18,7 @@
     "@fluentui/react-icons": "^2.0.320",
     "@microsoft/applicationinsights-react-js": "^19.3.8",
     "@microsoft/applicationinsights-web": "^3.3.11",
-    "@microsoft/power-apps": "^1.0.4",
+    "@microsoft/power-apps": "^1.1.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "babel-loader": "^10.0.0",

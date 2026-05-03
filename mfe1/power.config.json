@@ -24,6 +24,18 @@
         "dummy_20response_20connector_5f5c5002e8591d4426_ec19a7e19c1c18c8"
       ],
       "dataSets": {}
+    },
+    "192dd0f9-842d-4e3b-8713-b06e32617001": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_logicflows",
+      "displayName": "Logic flows",
+      "dataSources": [
+        "pa_addnewrowcustomtable"
+      ],
+      "workflowDetails": {
+        "workflowEntityId": "4ee108c5-5146-f111-bec6-000d3a0a6e61",
+        "workflowDisplayName": "PA-AddNewRowCustomTable",
+        "workflowName": "f9f927cd-caa2-7ac3-7d8c-80707bd07fe7"
+      }
     }
   },
   "databaseReferences": {
