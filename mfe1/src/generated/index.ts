@@ -7,11 +7,13 @@
 export * as CommonModels from './models/CommonModels';
 export * as ContactsModel from './models/ContactsModel';
 export * as DummyResponseConnectorModel from './models/DummyResponseConnectorModel';
+export * as FunctionAppConnectorModel from './models/FunctionAppConnectorModel';
 export * as Office365UsersModel from './models/Office365UsersModel';
 export * as PA_AddNewRowCustomTableModel from './models/PA_AddNewRowCustomTableModel';
 
 // Services
 export * from './services/ContactsService';
 export * from './services/DummyResponseConnectorService';
+export * from './services/FunctionAppConnectorService';
 export * from './services/Office365UsersService';
 export * from './services/PA_AddNewRowCustomTableService';
