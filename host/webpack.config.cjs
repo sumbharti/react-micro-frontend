@@ -13,15 +13,19 @@ module.exports = (
             maxAssetSize: 2000
         },
         resolve: {
-            alias: {
-            "../../../.power/schemas/appschemas": path.resolve(__dirname, ".power/schemas/appschemas")
-            },
-            extensions: [".tsx", ".ts", ".jsx", ".js"]
+            extensions: [".tsx", ".ts", ".jsx", ".js", ".mjs", '.cjs', '.json']
         },
         module: {
             rules: [
                 {
-                    test: /\.(ts|tsx)$/,
+                    test: /\.(ts|tsx|js|jsx|mjs)$/,
+                    include: /node_modules/,
+                    resolve: {
+                        fullySpecified: false
+                    }
+                },
+                {
+                    test: /\.(ts|tsx|js|jsx|mjs)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
@@ -63,7 +67,7 @@ module.exports = (
             new ModuleFederationPlugin({
                 name: "mfe1",
                 remotes: {
-                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260303t114808z14376fff68/remoteEntry.js'
+                    mfe1: 'mfe1@https://aab8eb134fa9e0719c20fe969e5bc9.d5.environment.api.powerplatformusercontent.com/powerapps/appruntime/57c6fb9d-517e-4231-9220-b11ca092b349/t/0ea672eb-3c32-4002-bd03-fec2acb1fea8/storageproxy/57c6fb9d517e42319220b11ca092b34920260503t041451z724655494a/remoteEntry.js'
                 }
             }),
             new HtmlWebpackPlugin({

@@ -17,15 +17,19 @@ module.exports = (
             publicPath: 'auto'
         },
         resolve: {
-            alias: {
-            "../../../.power/schemas/appschemas": path.resolve(__dirname, ".power/schemas/appschemas")
-            },
-            extensions: [".tsx", ".ts", ".jsx", ".js"]
+            extensions: [".tsx", ".ts", ".jsx", ".js", ".mjs", '.cjs', '.json']
         },
         module: {
             rules: [
                 {
-                    test: /\.(ts|tsx)$/,
+                    test: /\.(ts|tsx|js|jsx|mjs)$/,
+                    include: /node_modules/,
+                    resolve: {
+                        fullySpecified: false
+                    }
+                },
+                {
+                    test: /\.(ts|tsx|js|jsx|mjs)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",

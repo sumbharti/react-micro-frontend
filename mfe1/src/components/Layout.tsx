@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react-components';
 import { useTheme } from '../hooks/useTheme';
 import { Link, useLocation } from 'react-router-dom';
-import { ConnectorFilled, ConnectorRegular, HomeFilled, HomeRegular, NavigationRegular, PersonFilled, PersonRegular, WeatherMoonRegular, WeatherSunnyRegular } from '@fluentui/react-icons';
+import { ConnectorFilled, ConnectorRegular, FlowFilled, FlowRegular, HomeFilled, HomeRegular, NavigationRegular, PersonFilled, PersonRegular, WeatherMoonRegular, WeatherSunnyRegular } from '@fluentui/react-icons';
 
 const useStyles = makeStyles({
   root: {
@@ -284,6 +284,7 @@ const routeNames: Record<string, string> = {
   '/': 'Contacts',
   '/office365': 'Profile',
   '/customconnector': 'Custom Connector',
+  '/powerautomate': 'Power Automate',
 };
 
 interface NavItem {
@@ -315,6 +316,13 @@ const navItems: NavItem[] = [
     description: 'Use the custom connector',
     icon: <ConnectorRegular />,
     iconFilled: <ConnectorFilled />,
+  },
+  {
+    path: '/powerautomate',
+    label: 'Power Automate',
+    description: 'Use Power Automate',
+    icon: <FlowRegular />,
+    iconFilled: <FlowFilled />,
   }
 ]
 

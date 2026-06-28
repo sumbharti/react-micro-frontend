@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import HomePage from "./HomePage";
 import DummyResponseCustomConnector from "./CustomConnector";
 import Office365 from "./office365";
+import PowerAutomatePage from "./PowerAutomatePage";
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +40,7 @@ const App = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/office365" element={<Office365 />} />
                     <Route path="/customconnector" element={<DummyResponseCustomConnector />} />
+                    <Route path="/powerautomate" element={<PowerAutomatePage />} />
                 </Routes>
             </Suspense>
         </Layout>
